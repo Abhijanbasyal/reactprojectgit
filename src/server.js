@@ -1,41 +1,40 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const fs = require('fs');
+// server.js
+const jsonServer = require('json-server');
+const server = jsonServer.create();
+const router = jsonServer.router('db.json');
+const middlewares = jsonServer.defaults();
 
-const app = express();
-const PORT = 3001;
+server.use(middlewares);
+server.use(jsonServer.bodyParser);
 
-app.use(bodyParser.json());
-
-// Your in-memory "database" (replace this with a real database in production)
-let users = [];
-
-app.post('/api/signup', (req, res) => {
-  const newUser = req.body;
-
-  // Validate the request
-  if (!newUser.firstName || !newUser.lastName || !newUser.email || !newUser.username || !newUser.password || !newUser.confirmPassword) {
-    return res.status(400).json({ error: 'All fields are required' });
-  } else if (!isValidEmail(newUser.email)) {
-    return res.status(400).json({ error: 'Invalid email format' });
-  } else if (newUser.password !== newUser.confirmPassword) {
-    return res.status(400).json({ error: 'Passwords do not match' });
-  }
-
-  // Save the user to the "database"
-  users.push(newUser);
-
-  // For simplicity, we'll just log the user data
-  console.log('Signup successful:', newUser);
-
-  res.json({ success: true });
+// Custom route for handling signup
+server.post('/signup', (req, res) => {
+  const userData = req.body;
+  const db = router.db;
+  const data = db.getState();
+  data.users.push(userData);
+  db.setState(data);
+  db.write();
+  res.json(userData);
 });
 
-const isValidEmail = (email) => {
-  // Basic email validation, you can enhance it with a regex pattern
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-};
+// Custom route for handling login
+server.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  const db = router.db;
+  const data = db.getState();
+  const user = data.users.find((u) => u.username === username && u.password === password);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(401).json({ error: 'Invalid username or password' });
+  }
+});
+
+server.use(router);
+
+const PORT = 3000;
+server.listen(PORT, () => {
+  console.log(`JSON Server is running on http://localhost:${PORT}`);
 });

@@ -20,6 +20,11 @@ function App() {
     setLoggedInUser(null);
   };
 
+  const handleSignup = (user) => {
+    // You can handle signup logic here if needed
+    console.log('User signed up:', user);
+  };
+
   return (
     <div className="bg-slate-500 h-screen">
       <BrowserRouter>
@@ -29,10 +34,9 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/signup" element={<Signup />} /> 
+          <Route path="/signup" element={<Signup onSignup={handleSignup} />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/profile" element={<Profile />} />
-
         </Routes>
       </BrowserRouter>
     </div>

@@ -29,20 +29,17 @@ export const Navbar = ({ loggedInUser, onLogout }) => {
 
         <div className="float-right my-14 mr-12 py-6">
           <ul className='flex justify-between items-center'>
-            <NavLink to="/"  className="text-white">
+            <NavLink to="/" className="text-white">
               <li className='font-bold text-2xl hover:bg-teal-500 p-4'>Home</li>
             </NavLink>
-            <NavLink to="/about"  className="text-white">
+            <NavLink to="/about" className="text-white">
               <li className='font-bold text-2xl hover:bg-teal-500 p-4'>About</li>
             </NavLink>
-            <NavLink to="/blog"  className="text-white">
+            <NavLink to="/blog" className="text-white">
               <li className='font-bold text-2xl hover:bg-teal-500 p-4'>Blog</li>
             </NavLink>
-            <NavLink to="/contact"  className="text-white">
+            <NavLink to="/contact" className="text-white">
               <li className='font-bold text-2xl hover:bg-teal-500 p-4'>Contact</li>
-            </NavLink>
-            <NavLink to="/signup"  className="text-white">
-              <li className='font-bold text-2xl hover:bg-teal-500 p-4'>Signup</li>
             </NavLink>
             {loggedInUser ? (
               <div className="relative">
@@ -51,19 +48,24 @@ export const Navbar = ({ loggedInUser, onLogout }) => {
                 </button>
                 {dropdownVisible && (
                   <div className="absolute right-0 mt-2 bg-white p-2 rounded-md shadow-md">
-                    <button className="block text-gray-800 hover:bg-gray-200 py-1 px-2 rounded" onClick={goToProfile}>
-                      View Profile
+                    <button className="block text-gray-800 hover:bg-green-300 py-1 px-2 rounded" onClick={goToProfile}>
+                      Profile
                     </button>
-                    <button className="block text-gray-800 hover:bg-gray-200 py-1 px-2 rounded" onClick={handleLogout}>
+                    <button className="block text-gray-800 hover:bg-green-300 py-1 px-2 rounded" onClick={handleLogout}>
                       Logout
                     </button>
                   </div>
                 )}
               </div>
             ) : (
-              <NavLink to="/login"  className="text-white">
-                <li className='font-bold text-2xl hover:bg-teal-500 p-4'>Login</li>
-              </NavLink>
+              <>
+                <NavLink to="/signup" className="text-white">
+                  <li className='font-bold text-2xl hover:bg-teal-500 p-4'>Signup</li>
+                </NavLink>
+                <NavLink to="/login" className="text-white">
+                  <li className='font-bold text-2xl hover:bg-teal-500 p-4'>Login</li>
+                </NavLink>
+              </>
             )}
           </ul>
         </div>

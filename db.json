@@ -1,0 +1,49 @@
+{
+  "users": [
+    {
+      "firstName": "asd",
+      "lastName": "asd",
+      "email": "asd@gmail.com",
+      "username": "asd",
+      "password": "asd",
+      "confirmPassword": "asd",
+      "id": 1
+    },
+    {
+      "firstName": "basd",
+      "lastName": "asd",
+      "email": "asdaef@gmai.com",
+      "username": "asdef",
+      "password": "qwef",
+      "confirmPassword": "qwef",
+      "id": 2
+    },
+    {
+      "firstName": "qwer",
+      "lastName": "qwert",
+      "email": "qwerty@gmail.com",
+      "username": "qwerty",
+      "password": "qwer",
+      "confirmPassword": "qwer",
+      "id": 3
+    },
+    {
+      "firstName": "poiu",
+      "lastName": "poiu",
+      "email": "poiuy@gmail.com",
+      "username": "poiuy",
+      "password": "poiuy",
+      "confirmPassword": "poiuy",
+      "id": 4
+    },
+    {
+      "firstName": "qwertyu",
+      "lastName": "qwertyuio",
+      "email": "qwerty@gmail.com",
+      "username": "qwerty",
+      "password": "qwertyu",
+      "confirmPassword": "qwertyu",
+      "id": 5
+    }
+  ]
+}

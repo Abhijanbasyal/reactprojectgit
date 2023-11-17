@@ -1,51 +1,79 @@
-  import React, { useState } from 'react';
+import React, { useState } from 'react';
 
-  const Signup = () => {
-    const [formData, setFormData] = useState({
-      firstName: '',
-      lastName: '',
-      email: '',
-      username: '',
-      password: '',
-      confirmPassword: '',
-    });
+const Signup = ({ onSignup }) => {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
+  });
 
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    };
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-      // Perform your validation checks
-      if (!formData.firstName || !formData.lastName || !formData.email || !formData.username || !formData.password || !formData.confirmPassword) {
-        alert('All fields are required');
-      } else if (!isValidEmail(formData.email)) {
-        alert('Invalid email format');
-      } else if (formData.password !== formData.confirmPassword) {
-        alert('Passwords do not match');
-      } else {
-        // If all validations pass, you can proceed with signup logic
-        // For simplicity, we'll just log the form data for now
-        console.log('Signup successful:', formData);
+    // Perform your validation checks
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.username || !formData.password || !formData.confirmPassword) {
+      alert('All fields are required');
+    } else if (!isValidEmail(formData.email)) {
+      alert('Invalid email format');
+    } else if (formData.password !== formData.confirmPassword) {
+      alert('Passwords do not match');
+    } else {
+      try {
+        const response = await fetch('http://localhost:8000/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error);
+        }
+
+        // Call the onSignup function with the new user data
+        onSignup(formData);
+
+        // Reset the form after successful signup
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          username: '',
+          password: '',
+          confirmPassword: '',
+        });
+
+        alert('Signup successful');
+      } catch (error) {
+        alert(error.message);
       }
-    };
+    }
+  };
 
-    const isValidEmail = (email) => {
-      // Basic email validation, you can enhance it with a regex pattern
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    };
+  const isValidEmail = (email) => {
+    // Basic email validation, you can enhance it with a regex pattern
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
-    return (
-      <div className="flex justify-center items-center mt-12 ml-64 ">
-        <div className="bg-white p-8 rounded shadow-md w-full h-full mb-80">
-          <h2 className="text-2xl font-bold mb-4">SIGN UP!!!!</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4 flex">
+  return (
+    <div className="flex justify-center items-center mt-12 ml-64">
+      <div className="bg-white p-8 rounded shadow-md w-full h-full mb-80">
+        <h2 className="text-2xl font-bold mb-4">SIGN UP!!!!</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4 flex">
               <div className="w-1/2 pr-2">
                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="firstName">
                   First Name
@@ -57,7 +85,7 @@
                   value={formData.firstName}
                   onChange={handleChange}
                   className="border rounded w-full py-2 px-3"
-                  />
+                />
               </div>
               <div className="w-1/2 pl-2">
                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
@@ -134,12 +162,16 @@
                 Signup
               </button>
             </div>
-          </form>
-        </div>
+        </form>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
-  export default Signup;
+export default Signup;
 
-  
+
+
+
+
+
